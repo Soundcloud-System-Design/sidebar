@@ -22,7 +22,7 @@
     "server": "nodemon server/index.js",
     "build": "webpack --mode production",
     "test": "jest",
-    "db": "mysql -u root < server/db/schema.sql",
+    "db": "mysql -u root -p < server/db/schema.sql",
     "test:watch": "jest --watch",
     "testclient": "__test__/App.test.js",
     "testserver": " __test__/index.test.js",

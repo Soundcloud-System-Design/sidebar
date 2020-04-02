@@ -19,7 +19,7 @@ app.use('/', express.static(path.join(__dirname, '../client/dist')));
 /////// GET/POST req here ////
 
 // Get a random artist
-app.get('/artist', function(req, res) {
+app.get('/artist', function (req, res) {
 
   var artistInfo;
 
@@ -27,7 +27,7 @@ app.get('/artist', function(req, res) {
   db.Artist.findOne({
     order: Sequelize.literal('rand()')
   })
-    .then(function(artist) {
+    .then(function (artist) {
       artistInfo = artist;
       var limitNum = artist.liked_songs;
       if (limitNum > 3) {
@@ -40,26 +40,27 @@ app.get('/artist', function(req, res) {
         limit: limitNum
       });
     })
-    .then(function(songs) {
-      res.send({'artist': artistInfo, 'likedSongs': songs});
+    .then(function (songs) {
+      res.send({ 'artist': artistInfo, 'likedSongs': songs });
 
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log('Error trying to find a random artist. ' + err);
       res.status(404);
     });
 });
 
 // Find an artist
-app.get('/artistname/', function(req, res) {
+app.get('/artistname/', function (req, res) {
   console.log(req.query);
   var artistInfo;
 
   db.Artist.findOne({
     where: {
       'name': req.query.name
-    }})
-    .then(function(artist) {
+    }
+  })
+    .then(function (artist) {
       artistInfo = artist;
       var limitNum = artist.liked_songs;
       if (limitNum > 3) {
@@ -74,10 +75,10 @@ app.get('/artistname/', function(req, res) {
       });
 
     })
-    .then(function(songs) {
+    .then(function (songs) {
       res.send({ 'artist': artistInfo, 'likedSongs': songs });
     })
-    .catch(function(err) {
+    .catch(function (err) {
       //console.log('Could not find artist in database');
       res.status(404);
       res.send(`Could not find artist: ${req.query.name} in database`);
@@ -86,11 +87,24 @@ app.get('/artistname/', function(req, res) {
 
 // If have time, make an update request to add number to follower count, after clicking follower button.
 
-
+app.put('/user/likes', function (req, res) {
+  db.UserLikes.update({
+    likes: req.body.likes
+  }, {
+    where: {
+      song_name: req.params.song_name
+    }
+  }).then(function (rowsUpdated) {
+    res.status(200).send(rowsUpdated);
+  }).
+    catch(function (err) {
+      console.log(err);
+    })
+})
 
 
 // Adds new artist to the db, going to use to fill up db.
-app.post('/artist', function(req, res) {
+app.post('/artist', function (req, res) {
   // req.body should be an object with relevant values
   //
   console.log(JSON.stringify(req.body));
@@ -100,12 +114,12 @@ app.post('/artist', function(req, res) {
     },
     defaults: req.body
   })
-    .then(function(artist) {
+    .then(function (artist) {
       console.log('New artist entry has been added to database');
       res.send(artist.name);
       // Send a response that does something maybe.
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log('An error occurred trying to add new artist to the database');
       console.log(err);
     });
@@ -113,19 +127,32 @@ app.post('/artist', function(req, res) {
 });
 
 // Add Song info
-app.post('/user/likes', function(req, res) {
+app.post('/user/likes', function (req, res) {
   console.log(JSON.stringify(req.body));
   db.UserLikes.create(req.body)
-    .then(function(userLikes) {
+    .then(function (userLikes) {
 
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log('An error has occured trying to add new song info');
       console.log(err);
     });
 });
 
-
+//delete song
+app.delete('/user/links', function (req, res) {
+  db.Artist.destroy({
+    where: {
+      name: req.params.name
+    }
+  })
+    .then(function () {
+      res.send('delete');
+    })
+    .catch(function (err) {
+      console.log(err);
+    })
+})
 //listen for reqs
 app.listen(PORT, () => {
   console.log(`Server listening in on port ${PORT}`);

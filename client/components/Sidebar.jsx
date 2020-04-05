@@ -121,6 +121,7 @@ class Sidebar extends React.Component {
       liked_songs: artist.liked_songs,
       likedSongsList: results.likedSongs
     });
+    console.log(this.state)
   }
 
   // Make numbers prettier to read
@@ -169,7 +170,9 @@ class Sidebar extends React.Component {
     // axios.get random artist
     axios.get(`http://localhost:4444/artistname/?name=${e.currentTarget.textContent}`)
       .then(function (results) {
+
         that.formatData(results.data, that);
+        console.log(results.data, that)
       })
       .catch(function (err) {
         console.log(err);
@@ -183,10 +186,11 @@ class Sidebar extends React.Component {
     var that = this;
     // axios.get random artist
     axios.get(`http://localhost:4444/artist`)
-      .then(function(results) {
+      .then(function (results) {
+        console.log(results)
         that.formatData(results.data, that);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log(err);
       });
   }
@@ -203,6 +207,7 @@ class Sidebar extends React.Component {
       <SidebarContainer id='sidebar-right'>
 
         <div ref={this.outerRef} style={{ position: 'absolute', 'z-index': '-1' }}>
+
           <Invis id="invisiblediv" >
             <AboutDiv2Big id="notCollapsed">
               <div id="wrapper">
@@ -215,6 +220,7 @@ class Sidebar extends React.Component {
         </div>
 
         <article id="stats">
+
           <StatTable id="links">
             <Tbody>
               <Tr>
@@ -230,9 +236,10 @@ class Sidebar extends React.Component {
 
         <article>
           <AboutDiv id="about">
+
             <About
               about={this.state.about}
-              overFlow={this.state.overFlow}/>
+              overFlow={this.state.overFlow} />
           </AboutDiv>
         </article>
         <article>
@@ -252,7 +259,7 @@ class Sidebar extends React.Component {
           </div>
         </ArticleLiked>
 
-
+        {/* <div>{this.state.artistName}</div> */}
       </SidebarContainer>
     );
   }

@@ -85,14 +85,12 @@ app.get('/artistname/', function (req, res) {
     });
 });
 
-// If have time, make an update request to add number to follower count, after clicking follower button.
+// Update artist
 
-app.put('/user/likes', function (req, res) {
-  db.UserLikes.update({
-    likes: req.body.likes
-  }, {
+app.put('/updateartist', function (req, res) {
+  db.Artist.update({
     where: {
-      song_name: req.params.song_name
+      name: req.body.artist.name
     }
   }).then(function (rowsUpdated) {
     res.status(200).send(rowsUpdated);
@@ -107,7 +105,7 @@ app.put('/user/likes', function (req, res) {
 app.post('/artist', function (req, res) {
   // req.body should be an object with relevant values
   //
-  console.log(JSON.stringify(req.body));
+  //console.log(JSON.stringify(req.body));
   db.Artist.findOrCreate({
     where: {
       name: req.body.name
@@ -129,9 +127,9 @@ app.post('/artist', function (req, res) {
 // Add Song info
 app.post('/user/likes', function (req, res) {
   console.log(JSON.stringify(req.body));
-  db.UserLikes.create(req.body)
+  db.SongLike.create(req.body)
     .then(function (userLikes) {
-
+      res.status(201).send(userLikes)
     })
     .catch(function (err) {
       console.log('An error has occured trying to add new song info');
@@ -140,14 +138,14 @@ app.post('/user/likes', function (req, res) {
 });
 
 //delete song
-app.delete('/user/links', function (req, res) {
+app.delete('/deleteartist', function (req, res) {
   db.Artist.destroy({
     where: {
-      name: req.params.name
+      name: req.body.artist.name
     }
   })
     .then(function () {
-      res.send('delete');
+      res.send('DONE');
     })
     .catch(function (err) {
       console.log(err);

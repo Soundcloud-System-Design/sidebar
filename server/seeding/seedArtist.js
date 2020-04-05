@@ -2,7 +2,7 @@ var faker = require('faker');
 var fakeData = require('./fakeData.js');
 var db = require('../db/index.js')
 
-module.exports.createArtist = function(j) {
+module.exports.createArtist = function (j) {
 
   fakeArtist = fakeData.fakeNames[j];
   fakeAbout = '';
@@ -18,8 +18,8 @@ module.exports.createArtist = function(j) {
   // Creates artist about text.
   while (random > 0) {
     fakeAbout += words[index] + '. ';
-    index ++;
-    random --;
+    index++;
+    random--;
   }
 
   // Generate random amount of social links

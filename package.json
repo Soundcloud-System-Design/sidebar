@@ -49,6 +49,7 @@
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.2",
     "path": "^0.12.7",
+    "psql": "0.0.1",
     "react": "^16.13.0",
     "react-detectable-overflow": "^0.3.1",
     "react-dom": "^16.13.0",

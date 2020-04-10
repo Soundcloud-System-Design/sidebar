@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 // Will put db name here at some point. Spudiferous is my test db
 var dbName = 'sidebar';
 var username = 'root';
-var password = '';
+var password = 'password';
 
 // Databse login info
 var db = new Sequelize(dbName, username, password, {
@@ -13,7 +13,7 @@ var db = new Sequelize(dbName, username, password, {
 // Connect to database
 db
   .authenticate()
-  .then(function(err) {
+  .then(function (err) {
     console.log('Connection has been established');
   }, function (err) {
     console.log('Unable to connect to the database: ', err);

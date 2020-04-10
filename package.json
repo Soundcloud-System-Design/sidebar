@@ -19,14 +19,14 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "server": "nodemon server/index.js",
+    "server": "nodemon server/mysql_Index.js",
     "build": "webpack --mode production",
     "test": "jest",
-    "db": "mysql -u root < server/db/schema.sql",
+    "db": "mysql -u root -p < server/db/mysql/schema.sql",
     "test:watch": "jest --watch",
     "testclient": "__test__/App.test.js",
     "testserver": " __test__/index.test.js",
-    "seed": "node server/seeding/seed.js"
+    "seed": "node server/mysql/seed.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -35,18 +35,23 @@
     "body-parser": "^1.19.0",
     "cli-progress": "^3.6.0",
     "colors": "^1.4.0",
+    "csv-write-stream": "^2.0.0",
     "dotenv": "^8.2.0",
     "enzyme": "^3.11.0",
     "express": "^4.17.1",
-    "faker": "^4.1.0",
     "fs": "0.0.1-security",
     "jest-cli": "^25.1.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.9.7",
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
     "nodemon": "^2.0.2",
     "path": "^0.12.7",
+    "pg": "^8.0.0",
+    "pg-promise": "^10.5.0",
+    "psql": "0.0.1",
     "react": "^16.13.0",
     "react-detectable-overflow": "^0.3.1",
     "react-dom": "^16.13.0",
@@ -54,7 +59,8 @@
     "react-test-renderer": "^16.13.1",
     "request": "^2.81.0",
     "sequelize": "^5.21.5",
-    "styled-components": "^5.0.1"
+    "styled-components": "^5.0.1",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
@@ -68,7 +74,7 @@
     "enzyme-adapter-react-15.4": "^1.4.1",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor.git",
-    "faker": "4.1.0",
+    "faker": "^4.1.0",
     "file-loader": "^6.0.0",
     "html-loader": "^0.5.5",
     "jest": "^25.1.0",

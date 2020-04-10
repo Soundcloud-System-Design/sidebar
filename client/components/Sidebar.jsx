@@ -1,17 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-import StatCounts from './StatCounts.jsx';
-import Links from './Links.jsx';
-import About from './About.jsx';
-import LikedSongs from './LikedSongs.jsx';
+import React from "react";
+import ReactDOM from "react-dom";
+import axios from "axios";
+import StatCounts from "./StatCounts.jsx";
+import Links from "./Links.jsx";
+import About from "./About.jsx";
+import LikedSongs from "./LikedSongs.jsx";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
 ///////////////// STYLED COMPONENTS ////
 const SidebarContainer = styled.div`
   top: 401px;
-  font: 12px/1.4 Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;
+  font: 12px/1.4 Lucida Grande, Lucida Sans Unicode, Lucida Sans, Garuda,
+    Verdana, Tahoma, sans-serif;
   display: block;
   color: #333;
   position: absolute;
@@ -19,13 +20,13 @@ const SidebarContainer = styled.div`
   bottom: 0;
   right: 0;
   width: 300px;
-
 `;
 
 const StatTable = styled.table`
   width: 100%;
   margin-bottom: 14px;
-  font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;
+  font-family: Interstate, Lucida Grande, Lucida Sans Unicode, Lucida Sans,
+    Garuda, Verdana, Tahoma, sans-serif;
   font-weight: 100;
   border-collapse: collapse;
   border-spacing: 0;
@@ -48,7 +49,8 @@ const Tr = styled.tr`
 const AboutDiv = styled.div`
   margin-bottom: 20px;
   display: block;
-  font: 12px/1.4 Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;
+  font: 12px/1.4 Lucida Grande, Lucida Sans Unicode, Lucida Sans, Garuda,
+    Verdana, Tahoma, sans-serif;
   color: #333;
 `;
 
@@ -65,8 +67,7 @@ const ArticleLiked = styled.div`
 `;
 
 const Invis = styled.div`
-  opacity: .0;
-
+  opacity: 0;
 `;
 
 const AboutDiv2Big = styled.div`
@@ -78,15 +79,12 @@ const AboutDiv2Big = styled.div`
 `;
 //////////////////////////asdfas
 
-
-
 class Sidebar extends React.Component {
-
   constructor(props) {
     super(props);
     this.outerRef = React.createRef();
     this.state = {
-      artistName: '',
+      artistName: "",
       height: 0,
       links: [],
       about: [],
@@ -95,33 +93,38 @@ class Sidebar extends React.Component {
       track_count: null,
       liked_songs: null,
       likedSongsList: [],
-      overFlow: false
+      overFlow: false,
     };
   }
 
   // Reformat get data
   formatData(results, that) {
-    var artist = results.artist;
+    console.log(results);
+
+    var artist = results.artist[0].name;
+    //console.log(artist);
     // Change numbers into something easy to read
-    var trackCount = that.numberConversion(artist.track_count);
-    var followerCount = that.numberConversion(artist.follower_count);
-    var followingCount = that.numberConversion(artist.following_count);
+    var trackCount = that.numberConversion(results.artist[0].track_count);
+    var followerCount = that.numberConversion(results.artist[0].follower_count);
+    var followingCount = that.numberConversion(
+      results.artist[0].following_count
+    );
 
     // Run my height counter to run my checkOverflow function
-    this.checkOverflow()
+    this.checkOverflow();
 
     // Set Sidebar state
     that.setState({
-      artistName: artist.name,
+      artistName: artist,
       track_count: trackCount,
       follower_count: followerCount,
       following_count: followingCount,
-      about: artist.about.split('. '),
-      links: artist.links.split(' '),
-      liked_songs: artist.liked_songs,
-      likedSongsList: results.likedSongs
+      about: results.artist[0].about.split(". "),
+      links: results.artist[0].links.split(" "),
+      liked_songs: results.artist[0].liked_songs,
+      likedSongsList: results.similarSongs,
     });
-    console.log(this.state)
+    //console.log(this.state);
   }
 
   // Make numbers prettier to read
@@ -133,13 +136,13 @@ class Sidebar extends React.Component {
     if (number > 9999 && number < 1000000) {
       var stringNum = number.toString();
       var firstThree = stringNum.slice(0, -3);
-      firstThree += 'K';
+      firstThree += "K";
       number = firstThree;
     }
     if (number > 999999) {
       var stringNum = number.toString();
       var firstThree = stringNum.slice(0, -6);
-      firstThree += 'M';
+      firstThree += "M";
       number = firstThree;
     }
     return number;
@@ -149,16 +152,16 @@ class Sidebar extends React.Component {
     // Set timeout so that it checks height after the html has been rendered. Have to do it this way because of styled components being not great.
     setTimeout(() => {
       this.setState({
-        height: this.outerRef.current.clientHeight
+        height: this.outerRef.current.clientHeight,
       });
       if (this.state.height > 100) {
         this.setState({
-          overFlow: true
+          overFlow: true,
         });
       } else {
         this.setState({
-          overFlow: false
-        })
+          overFlow: false,
+        });
       }
     }, 100);
   }
@@ -168,26 +171,28 @@ class Sidebar extends React.Component {
     var that = this;
 
     // axios.get random artist
-    axios.get(`http://localhost:4444/artistname/?name=${e.currentTarget.textContent}`)
+    axios
+      .get(
+        `http://localhost:4445/artistname/?name=${e.currentTarget.textContent}`
+      )
       .then(function (results) {
-
         that.formatData(results.data, that);
-        console.log(results.data, that)
+        console.log("this is data", results.data, that);
       })
       .catch(function (err) {
         console.log(err);
       });
   }
 
-
   //send get req before component renders.
   componentDidMount() {
     // get req here
     var that = this;
     // axios.get random artist
-    axios.get(`http://localhost:4444/artist`)
+    axios
+      .get(`http://localhost:4445/artist`)
       .then(function (results) {
-        console.log(results)
+        console.log(results);
         that.formatData(results.data, that);
       })
       .catch(function (err) {
@@ -200,19 +205,18 @@ class Sidebar extends React.Component {
 
   // }
 
-
-
   render() {
     return (
-      <SidebarContainer id='sidebar-right'>
-
-        <div ref={this.outerRef} style={{ position: 'absolute', 'z-index': '-1' }}>
-
-          <Invis id="invisiblediv" >
+      <SidebarContainer id="sidebar-right">
+        <div
+          ref={this.outerRef}
+          style={{ position: "absolute", "z-index": "-1" }}
+        >
+          <Invis id="invisiblediv">
             <AboutDiv2Big id="notCollapsed">
               <div id="wrapper">
                 <div id="truncated-description">
-                  {this.state.about.join('\n')}
+                  {this.state.about.join("\n")}
                 </div>
               </div>
             </AboutDiv2Big>
@@ -220,40 +224,42 @@ class Sidebar extends React.Component {
         </div>
 
         <article id="stats">
-
           <StatTable id="links">
             <Tbody>
               <Tr>
-
-                <StatCounts statTitle='followers' statNum={this.state.follower_count} />
-                <StatCounts statTitle='following' statNum={this.state.following_count} />
-                <StatCounts statTitle='tracks' statNum={this.state.track_count} />
+                <StatCounts
+                  statTitle="followers"
+                  statNum={this.state.follower_count}
+                />
+                <StatCounts
+                  statTitle="following"
+                  statNum={this.state.following_count}
+                />
+                <StatCounts
+                  statTitle="tracks"
+                  statNum={this.state.track_count}
+                />
               </Tr>
-
             </Tbody>
           </StatTable>
         </article>
 
         <article>
           <AboutDiv id="about">
-
-            <About
-              about={this.state.about}
-              overFlow={this.state.overFlow} />
+            <About about={this.state.about} overFlow={this.state.overFlow} />
           </AboutDiv>
         </article>
         <article>
           <LinksDiv id="weblinks">
-            <Links
-              links={this.state.links}
-            />
+            <Links links={this.state.links} />
           </LinksDiv>
         </article>
         <ArticleLiked>
           <div id="likedsongs">
             <LikedSongs
               likedSongsList={this.state.likedSongsList}
-              count={this.state.liked_songs} onArtistNameClick={this.onArtistNameClick.bind(this)}
+              count={this.state.liked_songs}
+              onArtistNameClick={this.onArtistNameClick.bind(this)}
               numberConversion={this.numberConversion.bind(this)}
             />
           </div>

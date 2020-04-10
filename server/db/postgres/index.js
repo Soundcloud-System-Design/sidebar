@@ -1,28 +1,40 @@
-const { Pool, Client } = require('pg');
+const { Pool, Client } = require("pg");
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'database',
-
+  user: "josemadrigal",
+  host: "localhost",
+  database: "sidebar",
+  password: "",
 });
 
-
-
-var db = new Sequelize('sidebar', 'postgres', password, {
-  host: 'localhost',
-  dialect: 'postgres',
-  password: 'password'
+pool.connect((err, client, release) => {
+  if (err) {
+    return console.error("error acquiring client", err.stack);
+  }
 });
 
-// Connect to database
-db
-  .authenticate()
-  .then(function (err) {
-    console.log('Connection has been established');
-  })
-  .catch(function (err) {
-    console.log('Unable to connect to the database: ', err);
-  });
+// pool.query("CREATE DATABASE IF NOT EXISTS sidebar", function (err, res) {
+//   if (err) {
+//     throw err;
+//   }
+// });
 
-module.exports = db
+pool.query(
+  "CREATE TABLE IF NOT EXISTS songinformation ( name varchar not null, track_count int not null, follower_count int not null, following_count int not null, links varchar (255),about text, liked_songs int not null)",
+  (err, res) => {
+    if (err) {
+      throw err;
+    }
+  }
+);
+
+pool.query(
+  "CREATE TABLE IF NOT EXISTS similarsongs(song_name varchar (40) not null,artist_name varchar not null, plays int, likes bigint, reposts bigint, comments int, album_art text, location text,artist_pic text)",
+  (err, res) => {
+    if (err) {
+      throw err;
+    }
+  }
+);
+
+module.exports = pool;

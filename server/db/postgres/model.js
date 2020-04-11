@@ -1,6 +1,10 @@
 const pool = require("./index");
 
-const getArtist = (req, res, next) => {
+// var id = Math.floor(Math.random() * 10000001);
+// console.log(id);
+// "SELECT * FROM songinformation TABLESAMPLE SYSTEM(0.01) LIMIT 1;",
+
+const getArtist = async (req, res, next) => {
   return pool.query(
     "SELECT * FROM songinformation TABLESAMPLE SYSTEM(0.01) LIMIT 1;",
     (err, result) => {
@@ -16,7 +20,7 @@ const getArtist = (req, res, next) => {
   );
 };
 
-const getSimilarSongs = (req, res, next) => {
+const getSimilarSongs = async (req, res, next) => {
   return pool.query(
     "SELECT * FROM similarsongs  TABLESAMPLE SYSTEM(0.01) LIMIT 3;",
     (err, result) => {
@@ -31,8 +35,10 @@ const getSimilarSongs = (req, res, next) => {
   );
 };
 
-const renderInfo = (req, res) => {
-  res.status(200).json({ artist: req.artist, similarSongs: req.similarSongs });
+const renderInfo = async (req, res) => {
+  await res
+    .status(200)
+    .json({ artist: req.artist, similarSongs: req.similarSongs });
 };
 
 const createArtist = (req, res) => {

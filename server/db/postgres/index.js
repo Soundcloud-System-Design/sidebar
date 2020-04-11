@@ -20,7 +20,7 @@ pool.connect((err, client, release) => {
 // });
 
 pool.query(
-  "CREATE TABLE IF NOT EXISTS songinformation ( name varchar not null, track_count int not null, follower_count int not null, following_count int not null, links varchar (255),about text, liked_songs int not null)",
+  "CREATE TABLE IF NOT EXISTS songinformation (id int, name varchar not null, track_count int not null, follower_count int not null, following_count int not null, links varchar (255),about text, liked_songs int not null)",
   (err, res) => {
     if (err) {
       throw err;
@@ -29,7 +29,7 @@ pool.query(
 );
 
 pool.query(
-  "CREATE TABLE IF NOT EXISTS similarsongs(song_name varchar (40) not null,artist_name varchar not null, plays int, likes bigint, reposts bigint, comments int, album_art text, location text,artist_pic text)",
+  "CREATE TABLE IF NOT EXISTS similarsongs(id int, song_name varchar (40) not null,artist_name varchar not null, plays int, likes bigint, reposts bigint, comments int, album_art text, location text,artist_pic text)",
   (err, res) => {
     if (err) {
       throw err;

@@ -2,10 +2,10 @@ config:
   target: "http://localhost:4445"
   phases:
     - duration: 10
-      arrivalRate: 10
-    - duration: 120
-      arrivalRate: 10
-      rampTo: 50
+      arrivalRate: 1000
+    # - duration: 120
+    #   arrivalRate: 10
+    #   rampTo: 50
 
 scenarios:
   - flow:

@@ -1,9 +1,10 @@
 const { Pool, Client } = require("pg");
 
+//change to user:'josemadrigal', host: 'localhost', database: sidebar, password: '' for local use
 const pool = new Pool({
-  user: "josemadrigal",
-  host: "localhost",
-  database: "sidebar",
+  user: "postgres",
+  host: "",
+  database: "",
   password: "",
 });
 

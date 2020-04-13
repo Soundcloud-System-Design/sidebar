@@ -2,10 +2,11 @@ const { Pool, Client } = require("pg");
 
 //change to user:'josemadrigal', host: 'localhost', database: sidebar, password: '' for local use
 const pool = new Pool({
-  user: "postgres",
-  host: "",
-  database: "",
-  password: "",
+  user: "power_user",
+  host: "ec2-3-101-15-153.us-west-1.compute.amazonaws.com",
+  database: "template1",
+  password: "$poweruserpassword",
+  port: 5432,
 });
 
 pool.connect((err, client, release) => {

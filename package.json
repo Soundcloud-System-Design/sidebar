@@ -42,6 +42,7 @@
     "fs": "0.0.1-security",
     "jest-cli": "^25.1.0",
     "jquery": "^3.4.1",
+    "memory-cache": "^0.2.0",
     "moment": "^2.24.0",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.7",
